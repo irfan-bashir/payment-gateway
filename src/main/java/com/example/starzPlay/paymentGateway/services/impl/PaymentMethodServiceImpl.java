@@ -9,10 +9,7 @@ import com.example.starzPlay.paymentGateway.services.PaymentMethodService;
 import com.example.starzPlay.paymentGateway.utils.NullAwareBeanUtilsBean;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.beanutils.BeanUtilsBean;
-import org.modelmapper.ModelMapper;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
@@ -36,12 +33,9 @@ public class PaymentMethodServiceImpl implements PaymentMethodService {
             Optional<PaymentMethod> paymentMethodMaybe = repository.findById(id);
             if (paymentMethodMaybe.isPresent()){
                 PaymentMethod savedPaymentMethod = paymentMethodMaybe.get();
-
-                Set<PaymentPlan> paymentPlans = new HashSet<>();
-                paymentPlans.addAll(paymentMethod.getPaymentPlans());
+                Set<PaymentPlan> paymentPlans = new HashSet<>(paymentMethod.getPaymentPlans());
                 paymentPlans.forEach(paymentPlan -> paymentPlan.setPaymentMethod(savedPaymentMethod));
                 savedPaymentMethod.setPaymentPlans(paymentPlans);
-
                 BeanUtilsBean notNull  =new NullAwareBeanUtilsBean();
                 notNull.copyProperties(savedPaymentMethod, paymentMethod);
                 repository.save(savedPaymentMethod);

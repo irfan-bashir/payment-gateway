@@ -20,6 +20,7 @@ import static java.util.Objects.nonNull;
 @Component
 @Slf4j
 public class GetAllPaymentMethodsBusiness implements Business<GetAllPaymentMethodsInternalRequest, GetAllPaymentMethodsResponse> {
+    public static final String SUCCESS_MESSAGE = "Success";
     @Autowired
     PaymentMethodRepository repository;
 
@@ -29,16 +30,16 @@ public class GetAllPaymentMethodsBusiness implements Business<GetAllPaymentMetho
             if (nonNull(input.getId())){
                 Optional<PaymentMethod> paymentMethods = repository.findById(input.getId());
                 if (paymentMethods.isPresent()){
-                    return GetAllPaymentMethodsResponse.builder().status(HttpStatus.OK.value()).message("Success")
+                    return GetAllPaymentMethodsResponse.builder().status(HttpStatus.OK.value()).message(SUCCESS_MESSAGE)
                             .isSuccess(true).paymentMethodsList(Collections.singletonList(paymentMethods.get())).build();
                 }
             }else if(nonNull(input.getName())){
                 List<PaymentMethod> paymentMethods = repository.findByName(input.getName());
-                return GetAllPaymentMethodsResponse.builder().status(HttpStatus.OK.value()).message("Success")
+                return GetAllPaymentMethodsResponse.builder().status(HttpStatus.OK.value()).message(SUCCESS_MESSAGE)
                         .isSuccess(true).paymentMethodsList(paymentMethods).build();
             }else {
                 List<PaymentMethod> paymentMethods = repository.findAll();
-                return GetAllPaymentMethodsResponse.builder().status(HttpStatus.OK.value()).message("Success")
+                return GetAllPaymentMethodsResponse.builder().status(HttpStatus.OK.value()).message(SUCCESS_MESSAGE)
                         .isSuccess(true).paymentMethodsList(paymentMethods).build();
             }
         }catch (Exception e){
