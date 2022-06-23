@@ -5,6 +5,8 @@ This is demo repo for payment related APIs
 
 ### How To Run Application
 Please execute following commands to execute the application
+* Ceate schema with name "payment_service"
+* Update connection credentials in application.properties
 * mvn clean flyway:migrate -Dflyway.configFiles=myFlywayConfig.conf
 * mvn clean install
 * mvn spring-boot:run
